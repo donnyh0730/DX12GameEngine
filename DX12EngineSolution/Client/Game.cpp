@@ -3,9 +3,11 @@
 
 void Game::Init()
 {
-	
+	//TODO
+
 }
 
 void Game::Update()
 {
+	//TODO
 }
