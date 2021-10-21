@@ -28,7 +28,22 @@ void Game::Update()
 	GEngine->RenderBegin();
 
 	shader->Update();//셰이더를 CMD리스트에 넣는다.
-	mesh->Render();//들어간 셰이더를 기반으로 메쉬를 렌더링 한다. 
+	{
+		Transform t;
+		t.offset = Vec4(0.75f, 0.f, 0.f, 0.f);
+		mesh->SetTransform(t);
+
+		mesh->Render();
+	}
+
+	{
+		Transform t;
+		t.offset = Vec4(0.f, 0.75f, 0.f, 0.f);
+		mesh->SetTransform(t);
+
+		mesh->Render();
+	}
+
 
 	GEngine->RenderEnd();
 }
