@@ -36,9 +36,16 @@ void Mesh::Render()
 {
 	CMD_LIST->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);//버텍스를 삼각형 토폴로지 타입으로 묶음.
 	CMD_LIST->IASetVertexBuffers(0, 1, &_vertexBufferView); // Slot: (0~15)
-	
-	GEngine->GetCB()->PushData(0, &_transform, sizeof(_transform));
-	GEngine->GetCB()->PushData(1, &_transform, sizeof(_transform));
+	// TODO
+	// (1) Buffer에다가 데이터 세팅
+	// (2) TableDescHeap에다가 CBV 전달
+	// (3) 모두 세팅이 끝났으면 TableDescHeap 커밋
+
+	D3D12_CPU_DESCRIPTOR_HANDLE cbvHandle;
+	/*(1)*/cbvHandle = GEngine->GetCB()->PushData(0, &_transform, sizeof(_transform));
+	/*(2)*/GEngine->GetTableDescHeap()->SetCBV(cbvHandle, CBV_REGISTER::b0);
+	/*(2)*/GEngine->GetTableDescHeap()->SetCBV(cbvHandle, CBV_REGISTER::b1);		
+	/*(3)*/GEngine->GetTableDescHeap()->CommitTable();
 
 	CMD_LIST->DrawInstanced(_vertexCount, 1, 0, 0);
 }

@@ -70,8 +70,11 @@ void CommandQueue::RenderBegin(const D3D12_VIEWPORT* vp, const D3D12_RECT* rect)
 		D3D12_RESOURCE_STATE_RENDER_TARGET); // 외주 결과물
 	//백버퍼와 현재 화면의 리소스를 서로 트렌지션해주는 함수. 즉 백버퍼에서 그려진 내용을 가져옴.
 	_cmdList->SetGraphicsRootSignature(ROOT_SIGNATURE.Get());//CPU레지스터 사용에 대한 예약작업.
-
 	GEngine->GetCB()->Clear();
+	GEngine->GetTableDescHeap()->Clear();
+
+	ID3D12DescriptorHeap* descHeap = GEngine->GetTableDescHeap()->GetDescriptorHeap().Get();
+	_cmdList->SetDescriptorHeaps(1, &descHeap);
 
 	_cmdList->ResourceBarrier(1, &barrier);//위의 결과를 커맨드리스트에 넣을때 리소스까지 같이 할당해야 하기때문에
 	//리소스 베리어 라는 것을 사용하여 커맨드리스트에 밀어 넣는다.
