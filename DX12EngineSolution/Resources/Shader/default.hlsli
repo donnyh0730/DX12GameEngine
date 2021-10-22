@@ -1,10 +1,10 @@
 
-cbuffer TEST_B0 : register(b0)//GPU레지스터 메모리 예약
+cbuffer TEST_B0 : register(b0)
 {
     float4 offset0;
 };
 
-cbuffer TEST_B1 : register(b1)//GPU레지스터 메모리 예약
+cbuffer TEST_B1 : register(b1)
 {
     float4 offset1;
 };

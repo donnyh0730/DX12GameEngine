@@ -63,7 +63,7 @@ void SwapChain::CreateRTV(ComPtr<ID3D12Device> device)
 	rtvDesc.NodeMask = 0;
 
 	// 같은 종류의 데이터끼리 배열로 관리
-	// RTV 목록 : [전면버퍼] [후면버퍼]
+	// RTV 목록 : [ ] [ ]
 	device->CreateDescriptorHeap(&rtvDesc, IID_PPV_ARGS(&_rtvHeap));
 
 	D3D12_CPU_DESCRIPTOR_HANDLE rtvHeapBegin = _rtvHeap->GetCPUDescriptorHandleForHeapStart();

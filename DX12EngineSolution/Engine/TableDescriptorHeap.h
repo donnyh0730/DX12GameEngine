@@ -19,7 +19,7 @@ private:
 
 private:
 
-	ComPtr<ID3D12DescriptorHeap> _descHeap;//안에 여러개 들어있음.
+	ComPtr<ID3D12DescriptorHeap> _descHeap;
 	uint64					_handleSize = 0;
 	uint64					_groupSize = 0;
 	uint64					_groupCount = 0;

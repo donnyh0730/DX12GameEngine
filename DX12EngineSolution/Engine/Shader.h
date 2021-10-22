@@ -18,7 +18,6 @@ private:
 	ComPtr<ID3DBlob>					_errBlob;
 
 	ComPtr<ID3D12PipelineState>			_pipelineState;
-	//메쉬를 렌더링 하기위해 들고있는 버텍스쉐이더나 픽셀쉐이더 정보
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC  _pipelineDesc = {};
 };
 

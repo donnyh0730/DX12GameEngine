@@ -68,16 +68,16 @@ void CommandQueue::RenderBegin(const D3D12_VIEWPORT* vp, const D3D12_RECT* rect)
 		_swapChain->GetBackRTVBuffer().Get(),
 		D3D12_RESOURCE_STATE_PRESENT, // 화면 출력
 		D3D12_RESOURCE_STATE_RENDER_TARGET); // 외주 결과물
-	//백버퍼와 현재 화면의 리소스를 서로 트렌지션해주는 함수. 즉 백버퍼에서 그려진 내용을 가져옴.
-	_cmdList->SetGraphicsRootSignature(ROOT_SIGNATURE.Get());//CPU레지스터 사용에 대한 예약작업.
+
+	_cmdList->SetGraphicsRootSignature(ROOT_SIGNATURE.Get());
 	GEngine->GetCB()->Clear();
 	GEngine->GetTableDescHeap()->Clear();
 
 	ID3D12DescriptorHeap* descHeap = GEngine->GetTableDescHeap()->GetDescriptorHeap().Get();
 	_cmdList->SetDescriptorHeaps(1, &descHeap);
 
-	_cmdList->ResourceBarrier(1, &barrier);//위의 결과를 커맨드리스트에 넣을때 리소스까지 같이 할당해야 하기때문에
-	//리소스 베리어 라는 것을 사용하여 커맨드리스트에 밀어 넣는다.
+	_cmdList->ResourceBarrier(1, &barrier);
+
 	// Set the viewport and scissor rect.  This needs to be reset whenever the command list is reset.
 	_cmdList->RSSetViewports(1, vp);
 	_cmdList->RSSetScissorRects(1, rect);
@@ -94,7 +94,6 @@ void CommandQueue::RenderEnd()
 		_swapChain->GetBackRTVBuffer().Get(),
 		D3D12_RESOURCE_STATE_RENDER_TARGET, // 외주 결과물
 		D3D12_RESOURCE_STATE_PRESENT); // 화면 출력
-	//여기서는 반대로 해준다.
 
 	_cmdList->ResourceBarrier(1, &barrier);
 	_cmdList->Close();
@@ -102,7 +101,7 @@ void CommandQueue::RenderEnd()
 	// 커맨드 리스트 수행
 	ID3D12CommandList* cmdListArr[] = { _cmdList.Get() };
 	_cmdQueue->ExecuteCommandLists(_countof(cmdListArr), cmdListArr);
-	//실제로 밀어 넣어진 커맨드들이 여기서 실행된다. 
+
 	_swapChain->Present();
 
 	// Wait until frame commands are complete.  This waiting is inefficient and is

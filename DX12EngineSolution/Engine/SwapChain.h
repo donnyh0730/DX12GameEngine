@@ -20,7 +20,7 @@
 // - Double Buffering!
 
 // - [0] [1]
-// 현재 화면 [0]  <-> GPU 작업중 [1] BackBuffer
+// 현재 화면 [1]  <-> GPU 작업중 [1] BackBuffer
 
 class SwapChain
 {
@@ -41,12 +41,9 @@ private:
 
 private:
 	ComPtr<IDXGISwapChain>	_swapChain;
-
+	
 	ComPtr<ID3D12Resource>			_rtvBuffer[SWAP_CHAIN_BUFFER_COUNT];
 	ComPtr<ID3D12DescriptorHeap>	_rtvHeap;
-	//렌더타겟을 어떤식으로 기술 할건지에 대한 정보를 담고있는 데이터.
-	//스왑체인에 들어갈 전면버퍼와 후면버퍼가 어떤 식으로 만들어 질것인지에 대한 정보를 담고있다.
-	//즉, 버퍼는 몇개로할건지, 타입은 무엇인지, 플래그,노드마스크 등등의 값을 넣어줄 수 있다.
 	D3D12_CPU_DESCRIPTOR_HANDLE		_rtvHandle[SWAP_CHAIN_BUFFER_COUNT];
 
 	uint32					_backBufferIndex = 0;

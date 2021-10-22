@@ -1,8 +1,5 @@
 #include "pch.h"
 #include "Engine.h"
-#include "CommandQueue.h"
-#include "Device.h"
-#include "SwapChain.h"
 
 void Engine::Init(const WindowInfo& info)
 {
@@ -10,7 +7,7 @@ void Engine::Init(const WindowInfo& info)
 	ResizeWindow(info.width, info.height);
 
 	// 그려질 화면 크기를 설정
-	_viewport = { 0,0, static_cast<FLOAT>(info.width),static_cast<FLOAT>(info.height),0.0f,1.0f };
+	_viewport = { 0, 0, static_cast<FLOAT>(info.width), static_cast<FLOAT>(info.height), 0.0f, 1.0f };
 	_scissorRect = CD3DX12_RECT(0, 0, info.width, info.height);
 
 	_device = make_shared<Device>();

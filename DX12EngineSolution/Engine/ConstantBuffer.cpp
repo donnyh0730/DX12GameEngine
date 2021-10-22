@@ -72,7 +72,6 @@ void ConstantBuffer::CreateView()
 	}
 }
 
-
 void ConstantBuffer::Clear()
 {
 	_currentIndex = 0;
@@ -85,7 +84,7 @@ D3D12_CPU_DESCRIPTOR_HANDLE ConstantBuffer::PushData(int32 rootParamIndex, void*
 	::memcpy(&_mappedBuffer[_currentIndex * _elementSize], buffer, size);
 
 	D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle = GetCpuHandle(_currentIndex);
-
+	
 	_currentIndex++;
 
 	return cpuHandle;
