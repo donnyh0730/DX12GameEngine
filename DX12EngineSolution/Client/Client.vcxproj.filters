@@ -10,13 +10,16 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="소스 파일\Utils">
-      <UniqueIdentifier>{cd0af03e-e509-4739-adf7-c1e21ddb2428}</UniqueIdentifier>
+      <UniqueIdentifier>{ba85b981-78c0-4e00-81c6-56efb3afec53}</UniqueIdentifier>
     </Filter>
     <Filter Include="소스 파일\Game">
-      <UniqueIdentifier>{1b71fbc8-e060-45ed-947b-077873fe66de}</UniqueIdentifier>
+      <UniqueIdentifier>{c6b1ff15-4953-4a37-867b-e4f6e7b4f5dc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="targetver.h">
+      <Filter>소스 파일\Utils</Filter>
+    </ClInclude>
     <ClInclude Include="Client.h">
       <Filter>소스 파일\Utils</Filter>
     </ClInclude>
@@ -24,9 +27,6 @@
       <Filter>소스 파일\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>소스 파일\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
       <Filter>소스 파일\Utils</Filter>
     </ClInclude>
     <ClInclude Include="pch.h">
