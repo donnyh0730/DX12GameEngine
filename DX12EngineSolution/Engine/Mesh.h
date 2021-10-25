@@ -1,6 +1,6 @@
 #pragma once
 
-class Texture;
+class Material;
 
 // [유니티짱]과 같이 정점으로 이루어진 물체
 class Mesh
@@ -8,9 +8,6 @@ class Mesh
 public:
 	void Init(const vector<Vertex>& vertexBuffer, const vector<uint32>& indexbuffer);
 	void Render();
-
-	void SetTransform(const Transform& t) { _transform = t; }
-	void SetTexture(shared_ptr<Texture> tex) { _tex = tex; }
 
 private:
 	void CreateVertexBuffer(const vector<Vertex>& buffer);
@@ -24,8 +21,5 @@ private:
 	ComPtr<ID3D12Resource>		_indexBuffer;
 	D3D12_INDEX_BUFFER_VIEW		_indexBufferView;
 	uint32 _indexCount = 0;
-
-	Transform _transform = {};
-	shared_ptr<Texture> _tex = {};
 };
 

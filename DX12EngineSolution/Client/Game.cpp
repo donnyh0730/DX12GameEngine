@@ -1,10 +1,12 @@
 #include "pch.h"
 #include "Game.h"
 #include "Engine.h"
+#include "Material.h"
 
-shared_ptr<Mesh> mesh = make_shared<Mesh>();
-shared_ptr<Shader> shader = make_shared<Shader>();
-shared_ptr<Texture> texture = make_shared<Texture>();
+#include "GameObject.h"
+#include "MeshRenderer.h"
+
+shared_ptr<GameObject> gameObject = make_shared<GameObject>();
 
 void Game::Init(const WindowInfo& info)
 {
@@ -36,42 +38,44 @@ void Game::Init(const WindowInfo& info)
 		indexVec.push_back(3);
 	}
 
-	mesh->Init(vec, indexVec);
 
-	shader->Init(L"..\\Resources\\Shader\\default.hlsli");
+	// ¿À´Ã Å×½ºÆ®
+	gameObject->Init(); // Transform
 
-	texture->Init(L"..\\Resources\\Texture\\veigar.jpg");
+	shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+
+	{
+		shared_ptr<Mesh> mesh = make_shared<Mesh>();
+		mesh->Init(vec, indexVec);
+		meshRenderer->SetMesh(mesh);
+	}
+
+	{
+		shared_ptr<Shader> shader = make_shared<Shader>();
+		shared_ptr<Texture> texture = make_shared<Texture>();
+		shader->Init(L"..\\Resources\\Shader\\default.hlsli");
+		texture->Init(L"..\\Resources\\Texture\\veigar.jpg");
+		shared_ptr<Material> material = make_shared<Material>();
+		material->SetShader(shader);
+		material->SetFloat(0, 0.3f);
+		material->SetFloat(1, 0.4f);
+		material->SetFloat(2, 0.3f);
+		material->SetTexture(0, texture);
+		meshRenderer->SetMaterial(material);
+	}
+
+	gameObject->AddComponent(meshRenderer);	
 
 	GEngine->GetCmdQueue()->WaitSync();
 }
 
 void Game::Update()
 {
+	GEngine->Update();
+
 	GEngine->RenderBegin();
 
-	shader->Update();
-
-	{
-		Transform t;
-		t.offset = Vec4(0.25f, 0.25f, 0.2f, 0.f);
-		mesh->SetTransform(t);
-
-		mesh->SetTexture(texture);
-
-		mesh->Render();
-	}
-
-	{
-		Transform t;
-		t.offset = Vec4(0.f, 0.f, 0.3f, 0.f);
-		mesh->SetTransform(t);
-
-		mesh->SetTexture(texture);
-
-		mesh->Render();
-	}
-
-	
+	gameObject->Update();
 
 	GEngine->RenderEnd();
 }
