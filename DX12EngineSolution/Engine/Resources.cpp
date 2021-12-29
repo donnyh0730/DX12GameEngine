@@ -393,6 +393,20 @@ void Resources::CreateDefaultShader()
 		shader->CreateComputeShader(L"..\\Resources\\Shader\\particle.fx", "CS_Main", "cs_5_0");
 		Add<Shader>(L"ComputeParticle", shader);
 	}
+
+	// Shadow
+	{
+		ShaderInfo info =
+		{
+			SHADER_TYPE::SHADOW,
+			RASTERIZER_TYPE::CULL_BACK,
+			DEPTH_STENCIL_TYPE::LESS,
+		};
+
+		shared_ptr<Shader> shader = make_shared<Shader>();
+		shader->CreateGraphicsShader(L"..\\Resources\\Shader\\shadow.fx", info);
+		Add<Shader>(L"Shadow", shader);
+	}
 }
 
 void Resources::CreateDefaultMaterial()
@@ -463,5 +477,25 @@ void Resources::CreateDefaultMaterial()
 		material->SetShader(shader);
 
 		Add<Material>(L"ComputeParticle", material);
+	}
+
+	// GameObject
+	{
+		shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"Deferred");
+		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"Leather", L"..\\Resources\\Texture\\Leather.jpg");
+		shared_ptr<Texture> texture2 = GET_SINGLE(Resources)->Load<Texture>(L"Leather_Normal", L"..\\Resources\\Texture\\Leather_Normal.jpg");
+		shared_ptr<Material> material = make_shared<Material>();
+		material->SetShader(shader);
+		material->SetTexture(0, texture);
+		material->SetTexture(1, texture2);
+		Add<Material>(L"GameObject", material);
+	}
+
+	// Shadow
+	{
+		shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"Shadow");
+		shared_ptr<Material> material = make_shared<Material>();
+		material->SetShader(shader);
+		Add<Material>(L"Shadow", material);
 	}
 }
