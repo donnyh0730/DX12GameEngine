@@ -93,4 +93,34 @@ float CalculateTessLevel(float3 cameraWorldPos, float3 patchPos, float min, floa
     return level;
 }
 
+struct SkinningInfo
+{
+    float3 pos;
+    float3 normal;
+    float3 tangent;
+};
+
+void Skinning(inout float3 pos, inout float3 normal, inout float3 tangent,
+    inout float4 weight, inout float4 indices)
+{
+    SkinningInfo info = (SkinningInfo)0.f;
+
+    for (int i = 0; i < 4; ++i)//영향을받는 네개의 뼈
+    {
+        if (weight[i] == 0.f)
+            continue;
+
+        int boneIdx = indices[i];
+        matrix matBone = g_mat_bone[boneIdx];//컴퓨트셰이더에서 얻은 각프레임의 FinalMatrix
+
+        info.pos += (mul(float4(pos, 1.f), matBone) * weight[i]).xyz;
+        info.normal += (mul(float4(normal, 0.f), matBone) * weight[i]).xyz;
+        info.tangent += (mul(float4(tangent, 0.f), matBone) * weight[i]).xyz;
+    }
+
+    pos = info.pos;
+    tangent = normalize(info.tangent);
+    normal = normalize(info.normal);
+}
+
 #endif

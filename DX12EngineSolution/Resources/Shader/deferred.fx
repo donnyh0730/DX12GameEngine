@@ -2,6 +2,7 @@
 #define _DEFAULT_FX_
 
 #include "params.fx"
+#include "utils.fx"
 
 struct VS_IN
 {
@@ -9,6 +10,8 @@ struct VS_IN
     float2 uv : TEXCOORD;
     float3 normal : NORMAL;
     float3 tangent : TANGENT;
+    float4 weight : WEIGHT;
+    float4 indices : INDICES;
 
     row_major matrix matWorld : W;
     row_major matrix matWV : WV;
@@ -30,8 +33,11 @@ VS_OUT VS_Main(VS_IN input)
 {
     VS_OUT output = (VS_OUT)0;
 
-    if (g_int_0 == 1)
+    if (g_int_0 == 1)//인스턴싱 필요한경우.
     {
+        if (g_int_1 == 1)//애니메이션데이터가 있는경우.
+            Skinning(input.pos, input.normal, input.tangent, input.weight, input.indices);
+
         output.pos = mul(float4(input.pos, 1.f), input.matWVP);
         output.uv = input.uv;
 
@@ -42,6 +48,9 @@ VS_OUT VS_Main(VS_IN input)
     }
     else
     {
+        if (g_int_1 == 1)//애니메이션데이터가 있는경우.
+            Skinning(input.pos, input.normal, input.tangent, input.weight, input.indices);
+
         output.pos = mul(float4(input.pos, 1.f), g_matWVP);
         output.uv = input.uv;
 
@@ -74,6 +83,8 @@ PS_OUT PS_Main(VS_OUT input)
     {
         // [0,255] 범위에서 [0,1]로 변환
         float3 tangentSpaceNormal = g_tex_1.Sample(g_sam_0, input.uv).xyz;
+        //범프맵 데이터 샘플링
+
         // [0,1] 범위에서 [-1,1]로 변환
         tangentSpaceNormal = (tangentSpaceNormal - 0.5f) * 2.f;
         float3x3 matTBN = { input.viewTangent, input.viewBinormal, input.viewNormal };
